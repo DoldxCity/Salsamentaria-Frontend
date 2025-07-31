@@ -2,95 +2,277 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inventario Salsamentaria</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salsamentaria Pochett - Sistema de Inventario</title>
+    <style>
+        :root {
+            --primary: #FFC107; /* Amarillo principal */
+            --secondary: #2D2D2D; /* Gris oscuro */
+            --accent: #FFFFFF; /* Blanco */
+            --text: #1A1A1A; /* Texto oscuro */
+            --border: #E0E0E0; /* Bordes suaves */
+            --shadow: rgba(0, 0, 0, 0.1);
+            --highlight: #FFCA28; /* Amarillo más claro para hover */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, sans-serif;
+            background: var(--accent);
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .header {
+            background: var(--primary);
+            color: var(--secondary);
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .sidebar {
+            flex: 0 0 350px;
+            background: var(--secondary);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow);
+            height: fit-content;
+        }
+
+        .form-section h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--text);
+            background: var(--accent);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--highlight);
+            box-shadow: 0 0 8px rgba(255, 193, 7, 0.3);
+        }
+
+        button {
+            background: var(--primary);
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            color: var(--secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--highlight);
+            transform: translateY(-2px);
+        }
+
+        .table-section {
+            flex: 1;
+            background: var(--accent);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--primary);
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        tr:nth-child(even) {
+            background: #F9F9F9;
+        }
+
+        tr:hover {
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                flex: none;
+                width: 100%;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .container {
+                padding: 10px;
+            }
+            .sidebar, .table-section {
+                padding: 15px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body class="container py-4">
+<body>
+    <div class="header">
+        <h1>Salsamentaria Pochett</h1>
+        <p>Sistema de Gestión de Inventario</p>
+    </div>
 
-    <h1 class="mb-4">📋 Inventario Salsamentaria</h1>
+    <div class="container">
+        <!-- Formulario de Registro (Sidebar) -->
+        <div class="sidebar">
+            <div class="form-section">
+                <h2>Registro de Movimientos</h2>
+                <form id="inventoryForm">
+                    <div>
+                        <label for="product">Producto</label>
+                        <input type="text" id="product" placeholder="Nombre del producto" required>
+                    </div>
+                    <div>
+                        <label for="type">Tipo de Movimiento</label>
+                        <select id="type" required>
+                            <option value="entrada">Entrada</option>
+                            <option value="salida">Salida</option>
+                            <option value="llegada">Llegada de Producto Nuevo</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="quantity">Cantidad</label>
+                        <input type="number" id="quantity" min="1" placeholder="Cantidad" required>
+                    </div>
+                    <div>
+                        <label for="date">Fecha</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <button type="submit">Registrar Movimiento</button>
+                </form>
+            </div>
+        </div>
 
-    <!-- Formulario para agregar productos -->
-    <div class="card mb-4">
-        <div class="card-header">Agregar producto</div>
-        <div class="card-body">
-            <form action="/agregar" method="POST" class="row g-2">
-                <div class="col-md-4">
-                    <input type="text" name="nombre" placeholder="Nombre" class="form-control" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" step="0.01" name="precio" placeholder="Precio" class="form-control" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" name="cantidad" placeholder="Cantidad" class="form-control" required>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-success w-100">Agregar</button>
-                </div>
-            </form>
+        <!-- Tabla de Registros -->
+        <div class="table-section">
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryBody"></tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Formulario para movimientos -->
-    <div class="card mb-4">
-        <div class="card-header">Registrar entrada/salida</div>
-        <div class="card-body">
-            <form action="/movimiento" method="POST" class="row g-2">
-                <div class="col-md-4">
-                    <select name="producto_id" class="form-select" required>
-                        {% for p in productos %}
-                        <option value="{{ p[0] }}">{{ p[1] }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select name="tipo" class="form-select" required>
-                        <option value="entrada">Entrada</option>
-                        <option value="salida">Salida</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" name="cantidad" placeholder="Cantidad" class="form-control" required>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-primary w-100">Registrar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <script>
+        const form = document.getElementById('inventoryForm');
+        const tableBody = document.getElementById('inventoryBody');
+        let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
 
-    <!-- Tabla de productos -->
-    <h2>📦 Productos</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th><th>Nombre</th><th>Precio</th><th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for p in productos %}
-            <tr>
-                <td>{{ p[0] }}</td><td>{{ p[1] }}</td><td>${{ p[2] }}</td><td>{{ p[3] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        function loadInventory() {
+            tableBody.innerHTML = '';
+            inventory.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.date}</td>
+                    <td>${item.product}</td>
+                    <td>${item.type}</td>
+                    <td>${item.quantity}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
 
-    <!-- Historial de movimientos -->
-    <h2>📜 Historial de movimientos</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th><th>Producto</th><th>Tipo</th><th>Cantidad</th><th>Fecha</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for m in movimientos %}
-            <tr>
-                <td>{{ m[0] }}</td><td>{{ m[1] }}</td><td>{{ m[2] }}</td><td>{{ m[3] }}</td><td>{{ m[4] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const product = document.getElementById('product').value;
+            const type = document.getElementById('type').value;
+            const quantity = document.getElementById('quantity').value;
+            const date = document.getElementById('date').value;
 
+            const newItem = { product, type, quantity, date };
+            inventory.push(newItem);
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            loadInventory();
+            form.reset();
+        });
+
+        loadInventory();
+    </script>
 </body>
 </html>
