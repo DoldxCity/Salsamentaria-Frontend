@@ -508,13 +508,13 @@
                 e.preventDefault();
                 const user = authUser.value;
                 const password = authPassword.value;
-                if (user === 'admin' && password === '1234') {
+                if (user === 'Administrador' && password === 'Rafael1235') {
                     authModal.classList.remove('show');
                     authForm.reset();
                     callback();
-                    showNotification('Acción realizada exitosamente');
+                    showNotification('Buenaaa Gorditoooo!');
                 } else {
-                    showNotification('Usuario o contraseña incorrectos');
+                    showNotification('NoooOOoo Gorditooo!');
                     authForm.reset();
                 }
             };
