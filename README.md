@@ -8,11 +8,16 @@
         :root {
             --primary: #FFC107; /* Amarillo principal */
             --secondary: #2D2D2D; /* Gris oscuro */
-            --accent: #FFFFFF; /* Blanco */
+            --accent: #FFFFFF; /* Fondo en blanco */
             --text: #1A1A1A; /* Texto oscuro */
             --border: #E0E0E0; /* Bordes suaves */
             --shadow: rgba(0, 0, 0, 0.1);
             --highlight: #FFCA28; /* Amarillo más claro para hover */
+            --danger: #F44336; /* Rojo para eliminar */
+            --success: #4CAF50; /* Verde para stock alto */
+            --warning: #FFCA28; /* Amarillo para stock medio */
+            --error: #F44336; /* Rojo para stock bajo */
+            --low-stock-bg: #FFEBEE; /* Fondo rojo claro para stock bajo */
         }
 
         * {
@@ -23,7 +28,7 @@
 
         body {
             font-family: 'Poppins', -apple-system, sans-serif;
-            background: var(--accent);
+            background: var(--accent); /* Fondo en blanco */
             color: var(--text);
             line-height: 1.6;
             display: flex;
@@ -78,16 +83,68 @@
             color: var(--primary);
         }
 
+        .summary-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .summary-section div {
+            color: #FFFFFF; /* Texto en blanco para "Lo más usado" */
+        }
+
         form {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
+        .search-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-filter input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: #FFFFFF;
+            transition: all 0.3s ease;
+        }
+
+        .search-filter input:hover {
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+        }
+
+        .search-filter select {
+            padding: 10px;
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: #FFFFFF;
+            transition: all 0.3s ease;
+        }
+
+        .search-filter select:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+        }
+
+        /* Animación para las opciones al pasar el mouse */
+        .search-filter select option:hover {
+            transform: scale(1.05);
+            background: rgba(255, 193, 7, 0.2);
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+        }
+
         label {
             font-size: 0.9rem;
             font-weight: 500;
-            color: var(--accent);
+            color: var(--secondary);
         }
 
         input, select {
@@ -97,7 +154,7 @@
             border-radius: 6px;
             font-size: 0.95rem;
             color: var(--text);
-            background: var(--accent);
+            background: #FFFFFF; /* Blanco para casillas */
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -116,17 +173,53 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            transform: scale(1);
         }
 
         button:hover {
             background: var(--highlight);
-            transform: translateY(-2px);
+            transform: scale(1.05);
+        }
+
+        .delete-btn, .delete-product-btn {
+            background: var(--danger);
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            color: #FFFFFF;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+
+        .delete-btn:hover, .delete-product-btn:hover {
+            background: #D32F2F;
+            transform: scale(1.05);
+        }
+
+        .edit-btn {
+            background: var(--highlight);
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            color: var(--text);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 5px;
+            transform: scale(1);
+        }
+
+        .edit-btn:hover {
+            background: #FFB300;
+            transform: scale(1.05);
         }
 
         .table-section {
             flex: 1;
-            background: var(--accent);
+            background: var(--accent); /* Fondo en blanco */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px var(--shadow);
@@ -157,12 +250,119 @@
             color: var(--text);
         }
 
+        tr.low-stock-row {
+            background: var(--low-stock-bg);
+        }
+
         tr:nth-child(even) {
             background: #F9F9F9;
         }
 
         tr:hover {
             background: rgba(255, 193, 7, 0.1);
+        }
+
+        .progress-bar {
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .low-stock {
+            background: var(--error);
+        }
+
+        .medium-stock {
+            background: var(--warning);
+        }
+
+        .high-stock {
+            background: var(--success);
+        }
+
+        .low-stock-alert {
+            color: var(--error);
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px var(--shadow);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--accent); /* Fondo en blanco */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px var(--shadow);
+            width: 300px;
+            text-align: center;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .modal-content input {
+            margin-bottom: 10px;
+            background: #FFFFFF;
+        }
+
+        .modal-content button {
+            margin: 10px 5px;
+        }
+
+        .modal-content .cancel-btn {
+            background: var(--secondary);
+            color: #FFFFFF;
+        }
+
+        .modal-content .cancel-btn:hover {
+            background: #1a1a1a;
+            transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
@@ -197,6 +397,15 @@
         <div class="sidebar">
             <div class="form-section">
                 <h2>Registro de Movimientos</h2>
+                <div class="search-filter">
+                    <input type="text" id="search" placeholder="Buscar producto..." onkeyup="filterInventory()">
+                    <select id="filterType" onchange="filterInventory()">
+                        <option value="">Todos</option>
+                        <option value="entrada">Entrada</option>
+                        <option value="salida">Salida</option>
+                        <option value="llegada">Llegada</option>
+                    </select>
+                </div>
                 <form id="inventoryForm">
                     <div>
                         <label for="product">Producto</label>
@@ -218,8 +427,16 @@
                         <label for="date">Fecha</label>
                         <input type="date" id="date" required>
                     </div>
-                    <button type="submit">Registrar Movimiento</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" id="add-product-btn">Agregar Producto</button>
+                        <button type="button" class="edit-btn" id="edit-product-btn" style="display: none;">Editar Producto</button>
+                        <button type="button" class="delete-product-btn" id="delete-product-btn">Eliminar Producto</button>
+                    </div>
                 </form>
+            </div>
+            <div class="summary-section">
+                <h3>Resumen</h3>
+                <div id="top-rotation">Lo más usado</div>
             </div>
         </div>
 
@@ -232,6 +449,8 @@
                         <th>Producto</th>
                         <th>Tipo</th>
                         <th>Cantidad</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="inventoryBody"></tbody>
@@ -239,25 +458,133 @@
         </div>
     </div>
 
+    <!-- Notificación -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Modal de autenticación -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <h3>Autenticación requerida</h3>
+            <form id="authForm">
+                <input type="text" id="authUser" placeholder="Usuario" required>
+                <input type="password" id="authPassword" placeholder="Contraseña" required>
+                <div>
+                    <button type="submit">Confirmar</button>
+                    <button type="button" class="cancel-btn" id="cancelAuth">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         const form = document.getElementById('inventoryForm');
         const tableBody = document.getElementById('inventoryBody');
+        const notification = document.getElementById('notification');
+        const authModal = document.getElementById('authModal');
+        const authForm = document.getElementById('authForm');
+        const authUser = document.getElementById('authUser');
+        const authPassword = document.getElementById('authPassword');
+        const cancelAuth = document.getElementById('cancelAuth');
+        const addProductBtn = document.getElementById('add-product-btn');
+        const editProductBtn = document.getElementById('edit-product-btn');
+        const deleteProductBtn = document.getElementById('delete-product-btn');
+        const topRotation = document.getElementById('top-rotation');
         let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+        let editIndex = null;
+        let deleteIndex = null;
+        let deleteProductName = null;
+
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function showAuthModal(callback) {
+            authModal.classList.add('show');
+            authForm.onsubmit = (e) => {
+                e.preventDefault();
+                const user = authUser.value;
+                const password = authPassword.value;
+                if (user === 'Administrador' && password === 'Rafael1235') {
+                    authModal.classList.remove('show');
+                    authForm.reset();
+                    callback();
+                    showNotification('Enhorabuena!');
+                } else {
+                    showNotification('Muy mala!');
+                    authForm.reset();
+                }
+            };
+            cancelAuth.onclick = () => {
+                authModal.classList.remove('show');
+                authForm.reset();
+                editIndex = null;
+                deleteIndex = null;
+                deleteProductName = null;
+            };
+        }
 
         function loadInventory() {
             tableBody.innerHTML = '';
-            inventory.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.date}</td>
-                    <td>${item.product}</td>
-                    <td>${item.type}</td>
-                    <td>${item.quantity}</td>
-                `;
-                tableBody.appendChild(row);
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const filterType = document.getElementById('filterType').value;
+            const productRotation = {};
+
+            inventory.forEach((item, index) => {
+                productRotation[item.product] = (productRotation[item.product] || 0) + 1;
+
+                const matchesSearch = item.product.toLowerCase().includes(searchTerm);
+                const matchesFilter = !filterType || item.type === filterType;
+                if (matchesSearch && matchesFilter) {
+                    const row = document.createElement('tr');
+                    const quantity = parseInt(item.quantity);
+                    let stockClass = '';
+                    let progressWidth = '100%';
+                    if (quantity < 10) {
+                        stockClass = 'low-stock-row';
+                        progressWidth = `${(quantity / 10) * 100}%`;
+                    } else if (quantity <= 50) {
+                        progressWidth = `${(quantity / 50) * 100}%`;
+                    } else {
+                        progressWidth = '100%';
+                    }
+                    const stockAlert = quantity < 10 ? '<span class="low-stock-alert">¡Stock bajo!</span>' : '';
+                    row.innerHTML = `
+                        <td>${item.date}</td>
+                        <td>${item.product}</td>
+                        <td>${item.type}</td>
+                        <td>${item.quantity}</td>
+                        <td>
+                            <div class="progress-bar ${quantity < 10 ? 'low-stock' : quantity <= 50 ? 'medium-stock' : 'high-stock'}" style="width: ${progressWidth}"></div>
+                            ${stockAlert}
+                        </td>
+                        <td>
+                            <button class="edit-btn" data-index="${index}">Editar</button>
+                            <button class="delete-btn" data-index="${index}">Eliminar</button>
+                        </td>
+                    `;
+                    if (quantity < 10) row.classList.add('low-stock-row');
+                    tableBody.appendChild(row);
+                }
             });
+
+            // Productos con más rotación
+            const topProducts = Object.entries(productRotation)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3)
+                .map(([product, count]) => `${product}: ${count} movimientos`)
+                .join('<br>');
+            topRotation.innerHTML = `Lo más usado<br>${topProducts}`;
         }
 
+        function filterInventory() {
+            loadInventory();
+        }
+
+        // Evento para agregar producto
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const product = document.getElementById('product').value;
@@ -270,6 +597,73 @@
             localStorage.setItem('inventory', JSON.stringify(inventory));
             loadInventory();
             form.reset();
+            showNotification('Producto agregado exitosamente');
+        });
+
+        // Evento para editar producto
+        editProductBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const product = document.getElementById('product').value;
+            const type = document.getElementById('type').value;
+            const quantity = document.getElementById('quantity').value;
+            const date = document.getElementById('date').value;
+
+            showAuthModal(() => {
+                inventory[editIndex] = { product, type, quantity, date };
+                localStorage.setItem('inventory', JSON.stringify(inventory));
+                loadInventory();
+                form.reset();
+                addProductBtn.style.display = 'inline-block';
+                editProductBtn.style.display = 'none';
+                showNotification('Producto editado exitosamente');
+            });
+        });
+
+        // Evento para eliminar producto desde el formulario
+        deleteProductBtn.addEventListener('click', () => {
+            const product = document.getElementById('product').value;
+            if (!product) {
+                showNotification('Por favor, ingrese el nombre del producto a eliminar');
+                return;
+            }
+            deleteProductName = product;
+            showAuthModal(() => {
+                const index = inventory.findIndex(item => item.product.toLowerCase() === deleteProductName.toLowerCase());
+                if (index !== -1) {
+                    inventory.splice(index, 1);
+                    localStorage.setItem('inventory', JSON.stringify(inventory));
+                    loadInventory();
+                    form.reset();
+                } else {
+                    showNotification('Producto no encontrado');
+                }
+            });
+        });
+
+        // Evento para editar desde la tabla
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('edit-btn')) {
+                editIndex = e.target.getAttribute('data-index');
+                const item = inventory[editIndex];
+                document.getElementById('product').value = item.product;
+                document.getElementById('type').value = item.type;
+                document.getElementById('quantity').value = item.quantity;
+                document.getElementById('date').value = item.date;
+                addProductBtn.style.display = 'none';
+                editProductBtn.style.display = 'inline-block';
+            }
+        });
+
+        // Evento para eliminar desde la tabla
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                deleteIndex = e.target.getAttribute('data-index');
+                showAuthModal(() => {
+                    inventory.splice(deleteIndex, 1);
+                    localStorage.setItem('inventory', JSON.stringify(inventory));
+                    loadInventory();
+                });
+            }
         });
 
         loadInventory();
