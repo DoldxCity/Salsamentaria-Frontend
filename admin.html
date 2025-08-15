@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Administrador</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Panel de Administrador</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#" onclick="mostrar('usuarios')">Usuarios</a></li>
+        <li><a href="#" onclick="mostrar('productos')">Productos</a></li>
+        <li><a href="#" onclick="mostrar('categorias')">Categorías</a></li>
+        <li><a href="#" onclick="mostrar('facturacion')">Facturación</a></li>
+        <li><a href="#" onclick="mostrar('reportes')">Reportes</a></li>
+        <li><a href="#" onclick="mostrar('historial')">Historial</a></li>
+        <li><a href="index.html">Cerrar Sesión</a></li>
+    </ul>
+</nav>
+
+<main>
+    <!-- USUARIOS -->
+    <section id="usuarios" class="oculto">
+        <h2>Gestión de Usuarios</h2>
+        <button onclick="mostrarSub('nuevoUsuario')">Nuevo Usuario</button>
+        <button onclick="mostrarSub('gestionarUsuarios')">Gestionar Usuarios</button>
+
+        <div id="nuevoUsuario" class="subseccion oculto">
+            <h3>Crear Usuario</h3>
+            <input type="text" id="nombre" placeholder="Nombre">
+            <input type="text" id="apellido" placeholder="Apellido">
+            <input type="text" id="usuarioNuevo" placeholder="Usuario">
+            <input type="password" id="claveNueva" placeholder="Contraseña">
+            <input type="text" id="telefono" placeholder="Teléfono">
+            <button onclick="crearUsuario()">Guardar Usuario</button>
+        </div>
+
+        <div id="gestionarUsuarios" class="subseccion oculto">
+            <h3>Lista de Usuarios</h3>
+            <table border="1" width="100%">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Usuario</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaUsuarios"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <section id="productos" class="oculto">
+        <h2>Gestión de Productos</h2>
+        <button onclick="mostrarSub('nuevoProducto')">Nuevo Producto</button>
+        <button onclick="mostrarSub('gestionarProductos')">Gestionar Productos</button>
+        <button onclick="mostrarSub('actualizarStock')">Actualizar Stock</button>
+
+        <div id="nuevoProducto" class="subseccion oculto">
+            <h3>Crear Producto</h3>
+            <input type="text" id="prodNombre" placeholder="Nombre del producto">
+            <input type="text" id="prodCategoria" placeholder="Categoría">
+            <input type="number" id="prodPrecio" placeholder="Precio">
+            <input type="number" id="prodStock" placeholder="Stock inicial">
+            <button onclick="crearProducto()">Guardar Producto</button>
+        </div>
+
+        <div id="gestionarProductos" class="subseccion oculto">
+            <h3>Lista de Productos</h3>
+            <table border="1" width="100%">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProductos"></tbody>
+            </table>
+        </div>
+
+        <div id="actualizarStock" class="subseccion oculto">
+            <h3>Actualizar Stock</h3>
+            <select id="productoSelect"></select>
+            <input type="number" id="nuevoStock" placeholder="Nuevo stock">
+            <button onclick="actualizarStockProducto()">Actualizar</button>
+        </div>
+    </section>
+
+    <!-- CATEGORÍAS -->
+    <section id="categorias" class="oculto">
+        <h2>Gestión de Categorías</h2>
+        <button onclick="mostrarSub('nuevaCategoria')">Nueva Categoría</button>
+        <button onclick="mostrarSub('gestionarCategorias')">Gestionar Categorías</button>
+
+        <div id="nuevaCategoria" class="subseccion oculto">
+            <h3>Crear Categoría</h3>
+            <input type="text" id="catNombre" placeholder="Nombre de la categoría">
+            <button onclick="crearCategoria()">Guardar Categoría</button>
+        </div>
+
+        <div id="gestionarCategorias" class="subseccion oculto">
+            <h3>Lista de Categorías</h3>
+            <table border="1" width="100%">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaCategorias"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FACTURACIÓN -->
+    <section id="facturacion" class="oculto">
+        <h2>Facturación</h2>
+        <button onclick="mostrarSub('nuevaVenta')">Nueva Venta</button>
+        <button onclick="mostrarSub('gestionarVentas')">Gestionar Ventas</button>
+
+        <div id="nuevaVenta" class="subseccion oculto">
+            <h3>Crear Venta</h3>
+            <select id="ventaProducto"></select>
+            <input type="number" id="ventaCantidad" placeholder="Cantidad">
+            <button onclick="crearVenta()">Registrar Venta</button>
+        </div>
+
+        <div id="gestionarVentas" class="subseccion oculto">
+            <h3>Lista de Ventas</h3>
+            <table border="1" width="100%">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaVentas"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- REPORTES -->
+    <section id="reportes" class="oculto">
+        <h2>Reportes</h2>
+        <button onclick="generarReporte('clientes')">Reporte Clientes</button>
+        <button onclick="generarReporte('categorias')">Reporte Categorías</button>
+        <button onclick="generarReporte('productos')">Reporte Productos</button>
+        <button onclick="generarReporte('ventas')">Reporte Ventas</button>
+
+        <div id="resultadoReporte" class="subseccion"></div>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section id="historial" class="oculto">
+        <h2>Historial</h2>
+        <button onclick="mostrarHistorial()">Mostrar Historial</button>
+        <ul id="listaHistorial"></ul>
+    </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
